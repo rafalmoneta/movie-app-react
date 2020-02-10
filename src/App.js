@@ -5,7 +5,6 @@ import MovieApp from './components/MovieApp';
 function App() {
   return (
     <div className="App">
-      Hello World
       <MovieApp></MovieApp>
     </div>
   );
