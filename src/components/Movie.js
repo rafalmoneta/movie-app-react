@@ -9,12 +9,13 @@ const MovieContainer = styled.div`
 const MovieInfo = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1em;
+  padding: 0.5em;
   div:first-child {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    ${'' /* align-items: center; */}
     justify-content: space-between;
+    p { margin: 0;}
   }
   p {
       margin: 5px 0;
@@ -33,10 +34,10 @@ const MovieTitle = styled.h3`
   margin: 0;
 `
 
-const Movie = ({movie, genres}) => {
+const Movie = ({movie, genres, small}) => {
 
   const getGenres = (genres, movieIDs) => {
-    return movieIDs.slice(0,3).map((id) => {
+    return movieIDs.slice(0,2).map((id) => {
       for (const key in genres) {
         if(id === genres[key].id) {
           return genres[key].name;
@@ -55,8 +56,9 @@ const Movie = ({movie, genres}) => {
       <MovieInfo>
         <div>
           <MovieTitle>{movie.original_title}!</MovieTitle>
-          <p>{getYear(movie.release_date)}</p>
+          {!small && <p>{getYear(movie.release_date)}</p>}
         </div>
+        
         <p>{getGenres(genres, movie.genre_ids)}</p>
         <p><span role="img" aria-label="star">⭐ </span>{movie.vote_average} ({movie.vote_count})</p>
       </MovieInfo>

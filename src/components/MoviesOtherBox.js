@@ -5,9 +5,11 @@ const Container = styled.div`
   display: grid;
   width: 100%;
 
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(1, auto);
-  grid-column-gap: 2rem;
+  grid-template-columns: repeat(7, 12.5%);
+  ${'' /* grid-template-rows: repeat(1, auto); */}
+  justify-items: center;
+  grid-column-gap: 2%;
+  grid-row-gap: 2rem;
   
   @media (max-width: 960px) {
     grid-template-columns: repeat(2, 1fr);
@@ -18,7 +20,7 @@ const Container = styled.div`
 
 `
 
-const MoviesBox = ({children}) => {
+const MoviesOtherBox = ({children}) => {
   return (
     <Container>
       {children}
@@ -26,4 +28,4 @@ const MoviesBox = ({children}) => {
   );
 }
  
-export default MoviesBox;
+export default MoviesOtherBox;
