@@ -2,8 +2,9 @@ import React, { useState, useEffect, useReducer } from 'react';
 import Movie from './Movie';
 import Wrapper from './Wrapper';
 import MoviesBox from './MoviesBox';
-import MoviesOtherBox from './MoviesOtherBox';
+import Header from './Header';
 import Nav from './Nav';
+import Button from './Button';
 
 
 function dataFetchReducer(state, action) {
@@ -38,16 +39,21 @@ function dataFetchReducer(state, action) {
   }
 }
 
-const MovieApp = () => {
+const Home = () => {
   // const [apiKey] = useState(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_MOVIEDB_KEY}`);
   const [apiGenres] = useState(`https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_MOVIEDB_KEY}`)
   const [state, dispatch] = useReducer(dataFetchReducer, {isLoading: true, data: null, genres: null, movies: [] ,err: false })
   const [currentPage, setCurrentPage] = useState(1);
-  const [endpoint, setEndpoint] = useState(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_MOVIEDB_KEY}&page=1`)
-
+  const [query, setQuery] = useState(`movie/popular`)
+  const [endpoint, setEndpoint] = useState(`https://api.themoviedb.org/3/${query}?api_key=${process.env.REACT_APP_MOVIEDB_KEY}&page=${currentPage}`)
+  
   useEffect(()=> {
-    setEndpoint(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_MOVIEDB_KEY}&page=${currentPage}`)
-  })
+    setEndpoint(`https://api.themoviedb.org/3/${query}?api_key=${process.env.REACT_APP_MOVIEDB_KEY}&page=${currentPage}`)
+  }, [currentPage, query])
+
+  useEffect(() => {
+    setCurrentPage(1);
+  },[query])
 
   useEffect(() => {
     const fetching = async (endpoint) => {
@@ -59,6 +65,7 @@ const MovieApp = () => {
         ]);
         const resParsed = await res.json();
         const genresParsed = await genres.json();
+        
         if(currentPage === 1) {
           dispatch({type: "FETCH_SUCCES", data: resParsed.results, genres: genresParsed, movies: resParsed.results})
         } else {
@@ -75,50 +82,40 @@ const MovieApp = () => {
 
   },[endpoint, apiGenres])
 
-  const LoadMore = () => {
-    setCurrentPage(currentPage + 1);
-    console.log(endpoint);
-    
-  }
-
   return (
-    <Wrapper>
-      <h3>There will be a MovieDB logo</h3>
-      <button onClick={() => LoadMore()}>Add page</button>
-      <button onClick={() => console.log(state.movies)}>click me</button>
-      <Nav 
-      
+    <>
+      <Header
+        movie = {!state.isLoading && state.data[0]}
+        isLoading = {state.isLoading}
+        genres = {!state.isLoading && state.genres.genres}
       />
-      {!state.isLoading && 
-        <>
-          <MoviesBox>
-            {state.data.slice(0,4).map((movie, index) => {
-              return (
-                <Movie
-                  key={index}
-                  movie={movie}
-                  genres={state.genres.genres}
-                />
-              )
-            })} 
-          </MoviesBox>
-          <h2>More movies for you:</h2>
-          <MoviesOtherBox>
-            {state.data.slice(4).map((movie, index) => {
-              return (
-                <Movie
-                  key={index}
-                  movie={movie}
-                  genres={state.genres.genres}
-                  small={true}
-                />
-              )
-            })} 
-          </MoviesOtherBox>
-        </>
-      }
-    </Wrapper>
+      <Wrapper>
+        <Nav 
+          handleQueryChange={setQuery}
+        />
+        {!state.isLoading && 
+          <>
+            <MoviesBox>
+              {state.data.slice(1).map((movie, index) => {
+                return (
+                  <Movie
+                    key={index}
+                    movie={movie}
+                    genres={state.genres.genres}
+                  />
+                )
+              })} 
+            </MoviesBox>
+            <div style={{margin: '0 auto', width: 'fit-content'}}>
+              <Button onClick={() => setCurrentPage(currentPage + 1)} name="Load more movies!"/>
+              {/* <button onClick={() => setCurrentPage(currentPage + 1)}>Load more movies!</button> */}
+            </div>
+              
+          </>
+        }
+      </Wrapper>
+    </>
   );
 }
  
-export default MovieApp;
+export default Home;

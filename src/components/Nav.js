@@ -1,92 +1,46 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import Button from './Button';
 
 const Navigation = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  background-color: red;
+  width: 960px;
+  margin: 2rem auto;
   h1 {
-    margin: 0;
+    margin: 1rem 0;
+    font-size: 3rem;
   }
-  p {
-    margin: 0;
+  @media (max-width: 960px ) {
+    width: 100%;
   }
+
 `
 
 const ButtonsBox = styled.div`
   display: flex;
   flex-direction: row;
-`
-
-const Btn = styled.button`
-  border: none;
-  background-color: yellow;
-  border-radius: 25px;
-  padding: 0.5rem 2rem;
-`
-
-const categoriesArr = [
-  {
-    "id": 28,
-    "name": "Action"
-  },
-  {
-    "id": 16,
-    "name": "Animation"
-  },
-  {
-    "id": 12,
-    "name": "Adventure"
-  },
-  {
-    "id": 35,
-    "name": "Comedy"
-  },
-  {
-    "id": 99,
-    "name": "Documentary"
-  },
-  {
-    "id": 18,
-    "name": "Drama"
-  },
-  {
-    "id": 14,
-    "name": "Fantasy"
-  },
-  {
-    "id": 10749,
-    "name": "Romance"
-  },
-  {
-    "id": 878,
-    "name": "Science Fiction"
-  },
-  {
-    "id": 53,
-    "name": "Thriller"
+  flex-wrap: wrap;
+  justify-content: center;
+  @media (max-width: 500px) {
+    justify-content: space-between;
   }
-] 
+`
 
-const Nav = () => {
-  const [categories, setCategories] = useState(categoriesArr)
-  
+const Nav = ({handleQueryChange}) => {
+  const [buttons] = useState([{name: 'Popular', query: 'movie/popular'}, {name: 'Upcoming', query: 'movie/upcoming'}, {name: 'Now playing', query: 'movie/now_playing'}, {name: 'Top rated', query: 'movie/top_rated'}]) 
 
   return (
     <Navigation>
-      <h1>Now showing (4)</h1>
-      <p>Lastest movies that you can see in cinema</p>
       <ButtonsBox>
-        {categories.map((category, index) => {
-          return (
-            <Btn
+        {buttons.map((button, index)=>{
+          return(
+            <Button
               key={index}
-            >
-              {category.name}
-            </Btn>
+              onClick={() => handleQueryChange(button.query)}
+              name={button.name}
+            />
           )
-
         })}
       </ButtonsBox>
       
