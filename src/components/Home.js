@@ -56,7 +56,7 @@ const Home = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-  },[query])
+  },[query, searchValue])
 
   useEffect(() => {
     const fetching = async (endpoint) => {
