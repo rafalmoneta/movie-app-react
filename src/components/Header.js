@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import MoviedbLogo from '../assets/moviedbicon.svg';
+import { Link } from 'react-router-dom';
+import SearchBar from './SearchBar';
 
 const HeaderContent = styled.div`
   position: relative;
@@ -36,14 +38,6 @@ const Logo = styled.div`
   width: 200px;
 `
 
-const SearchBar = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 200px;
-  height: 70px;
-`
-
 const MovieContainer = styled.div`
   position: relative;
   top: -300px;
@@ -51,6 +45,9 @@ const MovieContainer = styled.div`
   width: 960px;
   margin: 0 auto;
   border-radius: 25px;
+  a {
+    text-decoration: none;
+  }
   @media (max-width: 960px ) {
     width: 100%;
     top: -50px;
@@ -108,7 +105,15 @@ const Desc = styled.p`
   padding: 0 1rem;
 `
 
-const Header = ({movie, isLoading, genres}) => {
+const BlankImage = styled.div`
+  display: block;
+  width: 100%;
+  height: 500px;
+  background-color: white;
+  border-radius: 25px;
+`
+
+const Header = ({movie, isLoading, genres, home, setQuery, setSearchValue}) => {
 
   const getGenres = (genres, movieIDs) => {
     return movieIDs.slice(0,3).map((id) => {
@@ -120,29 +125,47 @@ const Header = ({movie, isLoading, genres}) => {
     }).join(' / ');
   }
 
+
   return (
     <HeaderContent>
       <YellowBox>
-        <Logo>
-          <img src={MoviedbLogo} alt="Moviedb logo" />
-        </Logo>
-        <SearchBar>There will be search bar</SearchBar>
+        <Link to='/'>
+          <Logo>
+            <img src={MoviedbLogo} alt="Moviedb logo" />
+          </Logo>
+        </Link>
+        {home && <SearchBar
+          handleQueryChange={setQuery}
+          handleSearchValueChange={setSearchValue}
+        />}
       </YellowBox>
-      {!isLoading && 
+      {!isLoading &&
         <MovieContainer>
-          <MovieContent>
-            <img src={`http://image.tmdb.org/t/p/w1280${movie.backdrop_path}`} alt="movie poster"/>
-            <MovieInfo>
-              <div>
-                <h1>{movie.original_title}</h1>
-                <p>{getGenres(genres, movie.genre_ids)}</p>
-                <p><span role="img" aria-label="star">⭐ </span>{movie.vote_average} ({movie.vote_count})</p>
-              </div>
-              <Desc>{movie.overview}</Desc>
-            </MovieInfo>
+          {movie ? 
+          <Link to={`/movie/${movie.id}`}>
+            <MovieContent>
+              {movie.backdrop_path ? 
+                <img src={`http://image.tmdb.org/t/p/w1280${movie.backdrop_path}`} alt="movie poster"/>
+              :
+                <BlankImage />
+              }
+              
+              <MovieInfo>
+                <div>
+                  <h1>{movie.original_title}</h1>
+                  {genres && <p>{getGenres(genres, movie.genre_ids)}</p>}
+                  <p><span role="img" aria-label="star">⭐ </span>{movie.vote_average} ({movie.vote_count})</p>
+                </div>
+                <Desc>{movie.overview}</Desc>
+              </MovieInfo>
+            </MovieContent>
+          </Link>
 
+          : 
+            <div></div>
+          }
+          
 
-          </MovieContent>
         </MovieContainer>
       }
 

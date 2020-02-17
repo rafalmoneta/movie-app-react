@@ -1,11 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const MovieContainer = styled.div`
   display: block;
   width: 100%;
+  a {
+    text-decoration: none;
+    color: white;
+  }
 `
-
 const MovieInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,7 +25,6 @@ const MovieInfo = styled.div`
       margin: 5px 0;
     }
 `
-
 const ImageContainer = styled.div`
   display: block;
   width: 100%;
@@ -32,6 +35,14 @@ const ImageContainer = styled.div`
 `
 const MovieTitle = styled.h3`
   margin: 0;
+`
+
+const BlankImage = styled.div`
+  display: block;
+  width: 100%;
+  height: 500px;
+  background-color: white;
+  border-radius: 25px;
 `
 
 const Movie = ({movie, genres, small}) => {
@@ -52,16 +63,22 @@ const Movie = ({movie, genres, small}) => {
 
   return (
     <MovieContainer>
-      <ImageContainer><img src={`http://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="poster"/></ImageContainer>
-      <MovieInfo>
-        <div>
-          <MovieTitle>{movie.original_title}!</MovieTitle>
-          {!small && <p>{getYear(movie.release_date)}</p>}
-        </div>
-        
-        <p>{getGenres(genres, movie.genre_ids)}</p>
-        <p><span role="img" aria-label="star">⭐ </span>{movie.vote_average} ({movie.vote_count})</p>
-      </MovieInfo>
+      <Link to={`/movie/${movie.id}`}>
+        {movie.poster_path ? 
+          <ImageContainer><img src={`http://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="poster"/></ImageContainer>
+        :
+          <BlankImage />
+        }
+        <MovieInfo>
+          <div>
+            <MovieTitle>{movie.original_title}!</MovieTitle>
+            {!small && <p>{getYear(movie.release_date)}</p>}
+          </div>
+          
+          <p>{getGenres(genres, movie.genre_ids)}</p>
+          <p><span role="img" aria-label="star">⭐ </span>{movie.vote_average} ({movie.vote_count})</p>
+        </MovieInfo>
+      </Link>
     </MovieContainer>
   );
 }

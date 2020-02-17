@@ -21,7 +21,6 @@ const ButtonStyled = styled.button`
   @media (max-width: 500px) {
     padding: 0.5rem 1rem;
     flex: 1 0 auto;
-
   }
 `
 

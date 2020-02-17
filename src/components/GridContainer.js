@@ -4,7 +4,6 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: grid;
   width: 100%;
-  
   grid-template-columns: repeat(5, 18%);
   grid-template-rows: repeat(1, auto);
   grid-column-gap: 2.5%;
@@ -24,7 +23,7 @@ const Container = styled.div`
 
 `
 
-const MoviesBox = ({children}) => {
+const GridContainer = ({children}) => {
   return (
     <Container>
       {children}
@@ -32,4 +31,4 @@ const MoviesBox = ({children}) => {
   );
 }
  
-export default MoviesBox;
+export default GridContainer;

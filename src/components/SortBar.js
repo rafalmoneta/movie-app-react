@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button from './Button';
 
-const Navigation = styled.div`
+const SortContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 960px;
@@ -27,11 +27,11 @@ const ButtonsBox = styled.div`
   }
 `
 
-const Nav = ({handleQueryChange}) => {
+const SortBar = ({handleQueryChange}) => {
   const [buttons] = useState([{name: 'Popular', query: 'movie/popular'}, {name: 'Upcoming', query: 'movie/upcoming'}, {name: 'Now playing', query: 'movie/now_playing'}, {name: 'Top rated', query: 'movie/top_rated'}]) 
 
   return (
-    <Navigation>
+    <SortContainer>
       <ButtonsBox>
         {buttons.map((button, index)=>{
           return(
@@ -43,9 +43,8 @@ const Nav = ({handleQueryChange}) => {
           )
         })}
       </ButtonsBox>
-      
-    </Navigation>
+    </SortContainer>
   );
 }
  
-export default Nav;
+export default SortBar;
