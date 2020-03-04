@@ -1,6 +1,6 @@
-# Pokedex app
+# Movie app
 
-Simple pokedex app created with React and JSON-server.
+Simple movie app created with React and TheMovieDB API.
 [Live version](https://rafalmoneta.github.io/movie-app-react/)
 
 ![movieapp](movieapp.png "movieapp")
